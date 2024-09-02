@@ -21,9 +21,8 @@ public class Student{
     private String email;
     private Long hoursAttended;
     private Long hoursRequired;
+    @Column(name = "average")
+    private Double testScoreAverage;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Course> courses = new HashSet<>();
-
-
-
 }

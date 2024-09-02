@@ -1,7 +1,6 @@
 package com.project.test_student.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.test_student.dto.CourseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +14,6 @@ public class Course{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private String courseName;
     private Long hoursRequired;

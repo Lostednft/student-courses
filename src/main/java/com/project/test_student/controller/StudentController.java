@@ -34,6 +34,7 @@ public class StudentController{
     @GetMapping
     public ResponseEntity findAllStudent(){
 
+
         return ResponseEntity.ok(studentRepository.findAll());
     }
 
