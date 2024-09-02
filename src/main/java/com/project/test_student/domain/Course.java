@@ -1,5 +1,7 @@
 package com.project.test_student.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.test_student.dto.CourseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,27 +14,40 @@ import lombok.*;
 public class Course{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
     private String courseName;
+    private Long hoursRequired;
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Student student;
+
+    public Course(String courseName, Long hoursRequired, Student student) {
+        this.courseName = courseName;
+        this.hoursRequired = hoursRequired;
+        this.student = student;
+    }
 
     @Getter
     public enum CourseEnum {
 
-        MATHEMATICS(0L, "mathematics"),
-        SCIENCE(1L, "science"),
-        HISTORY(2L, "history"),
-        BIOLOGY(3L, "biology");
+        MATHEMATICS("mathematics", 350L),
+        SCIENCE("science", 300L),
+        HISTORY(  "history", 380L),
+        BIOLOGY( "biology", 290L);
 
-        private Long id;
         private String courseName;
+        private Long hoursRequired;
 
-        CourseEnum(Long id, String courseName) {
-            this.id = id;
+        CourseEnum(String courseName, Long hoursRequiredParam) {
             this.courseName = courseName;
+            this.hoursRequired = hoursRequiredParam;
         }
 
-        public Course toCourse() {
-            return new Course(id, courseName);
+        public Course toCourse( Student student) {
+            return new Course(courseName, hoursRequired,  student);
         }
     }
 }
