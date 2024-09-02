@@ -1,10 +1,5 @@
 package com.project.test_student.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,18 +27,7 @@ public class Student{
     private String email;
     private Long hoursAttended;
 
-
-    public Student(String name, List<Course> courses, String email, Long hoursAttended){
-
-        this.name = name;
-        this.courses.addAll(courses);
-        this.email = email;
-        this.hoursAttended = hoursAttended;
-
-    }
-
     public Student(StudentDto studentDto){
-
         this.name = studentDto.name();
         this.courses = studentDto.courses().stream()
                 .map(t -> Course.CourseEnum.valueOf(t.getCourseName().toUpperCase()).toCourse())

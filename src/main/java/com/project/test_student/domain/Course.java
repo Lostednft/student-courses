@@ -1,7 +1,6 @@
 package com.project.test_student.domain;
 
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.*;
 
 @Entity
