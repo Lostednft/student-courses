@@ -1,10 +1,13 @@
 package com.project.test_student.controller;
 
+import com.project.test_student.domain.Course;
 import com.project.test_student.domain.Student;
+import com.project.test_student.domain.StudentDto;
 import com.project.test_student.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -17,8 +20,9 @@ public class StudentController{
     }
 
     @PostMapping
-    public ResponseEntity saveStudent(@RequestBody Student student){
+    public ResponseEntity saveStudent(@RequestBody StudentDto studentDto){
 
+        Student student = new Student(studentDto);
         return ResponseEntity.ok(studentRepository.save(student));
     }
 
