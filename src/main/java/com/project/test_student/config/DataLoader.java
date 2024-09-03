@@ -45,7 +45,5 @@ public class DataLoader implements CommandLineRunner {
         student.setCourses(courses);
 
         studentRepository.save(student);
-
-        System.out.println(studentService.emailIsValid("felipe@gmail.com"));
     }
 }

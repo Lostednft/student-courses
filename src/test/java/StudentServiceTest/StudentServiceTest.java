@@ -49,9 +49,9 @@ public class StudentServiceTest {
         //GIVEN - not necessary
 
         //WHEN
-        boolean emailValidate = studentService.emailIsValid(student.getEmail());
+        String emailValidate = studentService.emailIsValid(student.getEmail());
 
         //THEN
-        Assertions.assertThat(emailValidate).isTrue();
+        Assertions.assertThat(emailValidate).isEqualTo(student.getEmail());
     }
 }
