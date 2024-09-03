@@ -1,4 +1,4 @@
-package StudentServiceTest;
+package com.project.test_student.StudentServiceTest;
 
 import com.project.test_student.domain.Course;
 import com.project.test_student.domain.Student;
