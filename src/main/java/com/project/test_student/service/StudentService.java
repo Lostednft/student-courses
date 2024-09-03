@@ -53,9 +53,10 @@ public class StudentService {
 
     public void studentDeleteById(String studentId){
 
-        studentRepository.findById(studentId).
-                orElseThrow(() -> new NoSuchElementException("No students found with this ID."));
+       Student student = studentRepository.findById(studentId)
+                .orElseThrow(()-> new NoSuchElementException("No students found with this ID."));
 
+        studentRepository.delete(student);
     }
 
 
@@ -114,4 +115,6 @@ public class StudentService {
                 .doubleValue();
 
     }
+
+
 }

@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @DataJpaTest
@@ -82,5 +83,19 @@ public class StudentRepositoryTests extends AbstractionBaseTest {
         Assertions.assertThat(students.get(0).getEmail()).isEqualTo(student.getEmail());
         Assertions.assertThat(students.get(1).getTestScoreAverage()).isEqualTo(studentNew.getTestScoreAverage());
 
+    }
+
+    @Test
+    void givenStudentSaved_whenDeleteObject_thenReturnNothing(){
+
+        //GIVEN -
+        studentRepository.save(student);
+
+        //WHEN
+        studentRepository.delete(student);
+        Student studentById = studentRepository.findById(student.getId()).orElse(null);
+
+        //THEN
+        Assertions.assertThat(studentById).isNull();
     }
 }
