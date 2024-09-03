@@ -50,6 +50,15 @@ public class StudentService {
                 .orElseThrow(() -> new NoSuchElementException("No students found with this ID."));
     }
 
+
+    public void studentDeleteById(String studentId){
+
+        studentRepository.findById(studentId).
+                orElseThrow(() -> new NoSuchElementException("No students found with this ID."));
+
+    }
+
+
     @Transactional
     public Student updateStudentById(StudentUpdateDto student) {
 
