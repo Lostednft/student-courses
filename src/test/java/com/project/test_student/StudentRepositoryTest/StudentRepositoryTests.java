@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @DataJpaTest
@@ -74,6 +73,7 @@ public class StudentRepositoryTests extends AbstractionBaseTest {
                 Course.CourseEnum.BIOLOGY.toCourse(studentNew),
                 Course.CourseEnum.MATHEMATICS.toCourse(studentNew)));
         studentRepository.saveAll(List.of(student, studentNew));
+
         //WHEN
         List<Student> students = studentRepository.findAll();
 
@@ -88,7 +88,7 @@ public class StudentRepositoryTests extends AbstractionBaseTest {
     @Test
     void givenStudentSaved_whenDeleteObject_thenReturnNothing(){
 
-        //GIVEN -
+        //GIVEN
         studentRepository.save(student);
 
         //WHEN
@@ -98,4 +98,6 @@ public class StudentRepositoryTests extends AbstractionBaseTest {
         //THEN
         Assertions.assertThat(studentById).isNull();
     }
+
+
 }
