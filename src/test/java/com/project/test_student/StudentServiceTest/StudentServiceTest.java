@@ -153,7 +153,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void given_when_then(){
+    void givenStudentObject_whenUpdateStudent_thenReturnStudentUpdated(){
 
         //GIVEN
         BDDMockito.given(studentRepository.save(any(Student.class))).willReturn(student);
