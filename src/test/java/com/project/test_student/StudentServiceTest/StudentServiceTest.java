@@ -106,7 +106,6 @@ public class StudentServiceTest {
         studentTemp.setHoursAttended(1925L);
 
         studentRepository.saveAll(List.of(studentTemp, student));
-
         BDDMockito.given(studentRepository.findAll()).willReturn(List.of(studentTemp, student));
 
         //WHEN
@@ -127,6 +126,7 @@ public class StudentServiceTest {
 
         //WHEN
         Student studentById = studentService.getStudentById(student.getId());
+
         //THEN
         Assertions.assertThat(studentById).isEqualTo(student);
         Assertions.assertThat(studentById.getId()).isEqualTo(student.getId());
@@ -139,15 +139,14 @@ public class StudentServiceTest {
 
         //GIVEN
         BDDMockito.given(studentRepository.findById(student.getId())).willReturn(Optional.of(student));
-
         studentRepository.save(student);
         Student studentSaved = studentRepository.findById(student.getId()).get();
 
         //WHEN
         studentService.studentDeleteById(student.getId());
         List<Student> students = studentRepository.findAll();
-        //THEN
 
+        //THEN
         Assertions.assertThat(students.size()).isEqualTo(0);
         Assertions.assertThat(studentSaved.getId()).isEqualTo(student.getId());
     }
@@ -170,10 +169,9 @@ public class StudentServiceTest {
 
         //WHEN
         studentService.updateStudentById(studentUpdate);
-
         Student studentUpdated = studentRepository.findById(studentUpdate.id()).get();
-        //THEN
 
+        //THEN
         Assertions.assertThat(studentUpdated.getEmail()).isEqualTo("julia.sz@gmail.com");
         Assertions.assertThat(studentUpdated.getHoursAttended()).isEqualTo(1994L);
         Assertions.assertThat(studentUpdated.getCourses()).isEqualTo(student.getCourses());
