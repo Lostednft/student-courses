@@ -3,6 +3,7 @@ package com.project.test_student.StudentServiceTest;
 import com.project.test_student.domain.Course;
 import com.project.test_student.domain.Student;
 import com.project.test_student.dto.StudentDto;
+import com.project.test_student.dto.StudentUpdateDto;
 import com.project.test_student.repository.StudentRepository;
 import com.project.test_student.service.StudentService;
 import org.assertj.core.api.Assertions;
@@ -10,10 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,6 @@ public class StudentServiceTest {
 
     @InjectMocks
     private StudentService studentService;
-    @Mock
     private StudentRepository studentRepository;
     private Student student;
     private StudentDto studentDto;
@@ -108,7 +108,6 @@ public class StudentServiceTest {
         studentRepository.saveAll(List.of(studentTemp, student));
 
         BDDMockito.given(studentRepository.findAll()).willReturn(List.of(studentTemp, student));
-        BDDMockito.given(studentService.getAllStudent()).willReturn(List.of(studentTemp, student));
 
         //WHEN
         List<Student> allStudent = studentService.getAllStudent();
@@ -117,5 +116,66 @@ public class StudentServiceTest {
         Assertions.assertThat(allStudent).isEqualTo(List.of(studentTemp, student));
         Assertions.assertThat(allStudent.get(0).getName()).isEqualTo(studentTemp.getName());
         Assertions.assertThat(allStudent.get(1).getHoursAttended()).isEqualTo(student.getHoursAttended());
+    }
+
+    @Test
+    void givenStudentObject_whenGetStudentById_thenReturnStude() {
+
+        //GIVEN
+        studentRepository.save(student);
+        BDDMockito.given(studentRepository.findById(student.getId())).willReturn(Optional.of(student));
+
+        //WHEN
+        Student studentById = studentService.getStudentById(student.getId());
+        //THEN
+        Assertions.assertThat(studentById).isEqualTo(student);
+        Assertions.assertThat(studentById.getId()).isEqualTo(student.getId());
+        Assertions.assertThat(studentById).isNotNull();
+    }
+
+
+    @Test
+    void givenStudentSaved_whenDeleteStudentById_thenReturnStudentListEmpty(){
+
+        //GIVEN
+        BDDMockito.given(studentRepository.findById(student.getId())).willReturn(Optional.of(student));
+
+        studentRepository.save(student);
+        Student studentSaved = studentRepository.findById(student.getId()).get();
+
+        //WHEN
+        studentService.studentDeleteById(student.getId());
+        List<Student> students = studentRepository.findAll();
+        //THEN
+
+        Assertions.assertThat(students.size()).isEqualTo(0);
+        Assertions.assertThat(studentSaved.getId()).isEqualTo(student.getId());
+    }
+
+    @Test
+    void given_when_then(){
+
+        //GIVEN
+        BDDMockito.given(studentRepository.save(any(Student.class))).willReturn(student);
+        BDDMockito.given(studentRepository.findById(student.getId())).willReturn(Optional.of(student));
+        studentRepository.save(student);
+
+        StudentUpdateDto studentUpdate = new StudentUpdateDto(
+                student.getId(),
+                "julia",
+                "julia.sz@gmail.com",
+                1994L,
+                studentDto.courses(),
+                studentDto.testScores());
+
+        //WHEN
+        studentService.updateStudentById(studentUpdate);
+
+        Student studentUpdated = studentRepository.findById(studentUpdate.id()).get();
+        //THEN
+
+        Assertions.assertThat(studentUpdated.getEmail()).isEqualTo("julia.sz@gmail.com");
+        Assertions.assertThat(studentUpdated.getHoursAttended()).isEqualTo(1994L);
+        Assertions.assertThat(studentUpdated.getCourses()).isEqualTo(student.getCourses());
     }
 }
