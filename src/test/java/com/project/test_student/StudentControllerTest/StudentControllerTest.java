@@ -7,13 +7,8 @@ import com.project.test_student.domain.Student;
 import com.project.test_student.dto.StudentDto;
 import com.project.test_student.dto.StudentUpdateDto;
 import com.project.test_student.repository.StudentRepository;
-import jakarta.transaction.Transactional;
-import org.aspectj.apache.bcel.classfile.ExceptionTable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,10 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -93,6 +88,7 @@ public class StudentControllerTest extends AbstractionBaseTest{
 
         //WHEN
         ResultActions response = mockMvc.perform(post("/student")
+                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(studentDto)));
 
@@ -116,7 +112,8 @@ public class StudentControllerTest extends AbstractionBaseTest{
         studentRepository.saveAll(List.of(student, studentNew));
 
         //WHEN
-        ResultActions response = mockMvc.perform(get("/student"));
+        ResultActions response = mockMvc.perform(get("/student")
+                .with(user("admin")));
 
         //THEN
 
@@ -135,7 +132,8 @@ public class StudentControllerTest extends AbstractionBaseTest{
         Student studentSaved = studentRepository.save(student);
 
         //WHEN
-        ResultActions response = mockMvc.perform(get("/student/{id}", studentSaved.getId()));
+        ResultActions response = mockMvc.perform(get("/student/{id}", studentSaved.getId())
+                .with(user("admin")));
         //THEN
 
         response.andDo(print())
@@ -151,7 +149,8 @@ public class StudentControllerTest extends AbstractionBaseTest{
         Student studentSaved = studentRepository.save(student);
 
         //WHEN
-        ResultActions response = mockMvc.perform(delete("/student/{id}", studentSaved.getId()));
+        ResultActions response = mockMvc.perform(delete("/student/{id}", studentSaved.getId())
+                .with(user("admin")));
 
         //THEN
         response.andDo(print())
@@ -178,6 +177,7 @@ public class StudentControllerTest extends AbstractionBaseTest{
 
         //WHEN
         ResultActions response = mockMvc.perform(put("/student")
+                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(studentToUpdate)));
 
